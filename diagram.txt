@@ -1,0 +1,40 @@
+@startuml
+abstract class Server {
+  + {abstract} get_prod_as_list()
+  + get_entries()
+}
+
+class TooManyProductsFoundError{
+}
+
+class ListServer {
+  + products: List[Product]
+  + get_prod_as_list(products: List[Product]): List
+}
+
+
+class MapServer {
+  + products: Dict[Product]
+  + get_prod_as_list(products: Dict[Product]): List
+}
+
+class Client {
+  + get_total_price(n_letter: Optional[float]): Optional[float]
+}
+class Product{
+  + name: str
+  + price: float
+  + __eq__(id1: Product, id2: Product): bool
+  + __hash__(): hash(str, float)
+}
+
+
+Server ..> TooManyProductsFoundError : << uses >>
+Client o-- Server
+ListServer *-- Product
+MapServer *-- Product
+Server <|-- ListServer
+Server <|-- MapServer
+
+hide TooManyProductsFoundError members
+@enduml
